@@ -10,8 +10,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.Configure<ConnectionStringOptions>(builder.Configuration.GetSection(ConnectionStringOptions.SectionName));
-
 builder.Services.AddAppDI(builder.Configuration);
 
 WebApplication app = builder.Build();
