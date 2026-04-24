@@ -6,6 +6,8 @@ namespace MyApp.Application
     {
         public static IServiceCollection AddApplicationDI(this IServiceCollection services)
         {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly));
+
             return services;
         }
     }
