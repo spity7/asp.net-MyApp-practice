@@ -5,6 +5,7 @@ using MyApp.Core.Interfaces;
 using MyApp.Core.Options;
 using MyApp.Infrastructure.Data;
 using MyApp.Infrastructure.Repositories;
+using MyApp.Infrastructure.Services;
 
 namespace MyApp.Infrastructure
 {
@@ -19,6 +20,17 @@ namespace MyApp.Infrastructure
             });
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IExternalVendorRepository, ExternalVendorRepository>();
+
+            services.AddHttpClient<IMockiHttpClientService, MockiHttpClientService>(option =>
+            {
+                option.BaseAddress = new Uri("https://mocki.io/v1/");
+            });
+
+            services.AddHttpClient<IJokeHttpClientService, JokeHttpClientService>(option =>
+            {
+                option.BaseAddress = new Uri("https://official-joke-api.appspot.com/");
+            });
 
             return services;
         }
