@@ -10,17 +10,21 @@ namespace MyApp.Api.Controllers
     public class ExternalVendorController(ISender sender) : ControllerBase
     {
         [HttpGet("")]
-        public async Task<IActionResult> GetMockiData()
+        [ProducesResponseType(typeof(MockiData), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status502BadGateway)]
+        public async Task<IActionResult> GetMockiData(CancellationToken cancellationToken)
         {
-            MockiData result = await sender.Send(new GetMockiDataQuery());
+            MockiData result = await sender.Send(new GetMockiDataQuery(), cancellationToken);
 
             return Ok(result);
         }
 
         [HttpGet("joke")]
-        public async Task<IActionResult> GetJoke()
+        [ProducesResponseType(typeof(JokeModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status502BadGateway)]
+        public async Task<IActionResult> GetJoke(CancellationToken cancellationToken)
         {
-            JokeModel result = await sender.Send(new GetJokeQuery());
+            JokeModel result = await sender.Send(new GetJokeQuery(), cancellationToken);
 
             return Ok(result);
         }

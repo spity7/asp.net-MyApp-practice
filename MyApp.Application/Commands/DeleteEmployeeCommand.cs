@@ -10,8 +10,7 @@ namespace MyApp.Application.Commands
     {
         public async Task<bool> Handle(DeleteEmployeeCommand request, CancellationToken cancellationToken)
         {
-            return await employeeRepository.DeleteEmployeeAsync(request.EmployeeId);
+            return await employeeRepository.DeleteEmployeeAsync(request.EmployeeId, cancellationToken);
         }
     }
-
 }

@@ -1,17 +1,22 @@
 ﻿using MediatR;
+using MyApp.Application.Dtos;
+using MyApp.Application.Mapping;
 using MyApp.Core.Entities;
 using MyApp.Core.Interfaces;
 
 namespace MyApp.Application.Commands
 {
-    public record AddEmployeeCommand(EmployeeEntity Employee) : IRequest<EmployeeEntity>;
+    public record AddEmployeeCommand(CreateEmployeeRequest Request) : IRequest<EmployeeDto>;
 
     public class AddEmployeeCommandHandler(IEmployeeRepository employeeRepository)
-        : IRequestHandler<AddEmployeeCommand, EmployeeEntity>
+        : IRequestHandler<AddEmployeeCommand, EmployeeDto>
     {
-        public async Task<EmployeeEntity> Handle(AddEmployeeCommand request, CancellationToken cancellationToken)
+        public async Task<EmployeeDto> Handle(AddEmployeeCommand request, CancellationToken cancellationToken)
         {
-            return await employeeRepository.AddEmployeeAsync(request.Employee);
+            EmployeeEntity created =
+                await employeeRepository.AddEmployeeAsync(request.Request.ToNewEntity(), cancellationToken);
+
+            return created.ToDto();
         }
     }
 }

@@ -6,11 +6,12 @@ namespace MyApp.Application.Queries
 {
     public record GetJokeQuery() : IRequest<JokeModel>;
 
-    public class GetJokeQueryHandler(IExternalVendorRepository externalVendorRepository) : IRequestHandler<GetJokeQuery, JokeModel>
+    public class GetJokeQueryHandler(IExternalVendorGateway externalVendorGateway)
+        : IRequestHandler<GetJokeQuery, JokeModel>
     {
-        public async Task<JokeModel> Handle(GetJokeQuery request, CancellationToken cancellationToken)
+        public Task<JokeModel> Handle(GetJokeQuery request, CancellationToken cancellationToken)
         {
-            return await externalVendorRepository.GetJokeAsync(cancellationToken);
+            return externalVendorGateway.GetJokeAsync(cancellationToken);
         }
     }
 }

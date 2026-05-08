@@ -15,21 +15,24 @@ namespace MyApp.Infrastructure
         {
             services.AddDbContext<AppDbContext>((provider, options) =>
             {
-                ConnectionStringOptions connectionStringOptions = provider.GetRequiredService<IOptionsSnapshot<ConnectionStringOptions>>().Value;
+                ConnectionStringOptions connectionStringOptions =
+                    provider.GetRequiredService<IOptionsSnapshot<ConnectionStringOptions>>().Value;
                 options.UseSqlServer(connectionStringOptions.DefaultConnection);
             });
 
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            services.AddScoped<IExternalVendorRepository, ExternalVendorRepository>();
+            services.AddScoped<IExternalVendorGateway, ExternalVendorGateway>();
 
-            services.AddHttpClient<IMockiHttpClientService, MockiHttpClientService>(option =>
+            services.AddHttpClient<IMockiHttpClientService, MockiHttpClientService>((sp, httpClient) =>
             {
-                option.BaseAddress = new Uri("https://mocki.io/v1/");
+                IOptionsMonitor<MockiApiOptions> mockiOptionsMonitor = sp.GetRequiredService<IOptionsMonitor<MockiApiOptions>>();
+                httpClient.BaseAddress = new Uri(mockiOptionsMonitor.CurrentValue.BaseAddress);
             });
 
-            services.AddHttpClient<IJokeHttpClientService, JokeHttpClientService>(option =>
+            services.AddHttpClient<IJokeHttpClientService, JokeHttpClientService>((sp, httpClient) =>
             {
-                option.BaseAddress = new Uri("https://official-joke-api.appspot.com/");
+                IOptionsMonitor<JokeApiOptions> jokeOptionsMonitor = sp.GetRequiredService<IOptionsMonitor<JokeApiOptions>>();
+                httpClient.BaseAddress = new Uri(jokeOptionsMonitor.CurrentValue.BaseAddress);
             });
 
             return services;

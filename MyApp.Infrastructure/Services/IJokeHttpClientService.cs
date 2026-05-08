@@ -4,6 +4,6 @@ namespace MyApp.Infrastructure.Services
 {
     public interface IJokeHttpClientService
     {
-        Task<JokeModel> GetData();
+        Task<JokeModel> GetDataAsync(CancellationToken cancellationToken = default);
     }
 }

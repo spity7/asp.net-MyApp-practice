@@ -1,6 +1,7 @@
 <Solution>
   <Project Path="MyApp.Api/MyApp.Api.csproj" />
   <Project Path="MyApp.Application/MyApp.Application.csproj" />
+  <Project Path="MyApp.Application.Tests/MyApp.Application.Tests.csproj" />
   <Project Path="MyApp.Core/MyApp.Core.csproj" />
   <Project Path="MyApp.Infrastructure/MyApp.Infrastructure.csproj" />
 </Solution>

@@ -1,18 +1,19 @@
 ﻿using MediatR;
-using MyApp.Core.Entities;
+using MyApp.Application.Dtos;
+using MyApp.Application.Mapping;
 using MyApp.Core.Interfaces;
 
 namespace MyApp.Application.Queries
 {
-    public record GetAllEmployeesQuery() : IRequest<IEnumerable<EmployeeEntity>>;
+    public record GetAllEmployeesQuery() : IRequest<IEnumerable<EmployeeDto>>;
 
     public class GetAllEmployeesQueryHandler(IEmployeeRepository employeeRepository)
-        : IRequestHandler<GetAllEmployeesQuery, IEnumerable<EmployeeEntity>>
+        : IRequestHandler<GetAllEmployeesQuery, IEnumerable<EmployeeDto>>
     {
-        public async Task<IEnumerable<EmployeeEntity>> Handle(GetAllEmployeesQuery request,
+        public async Task<IEnumerable<EmployeeDto>> Handle(GetAllEmployeesQuery request,
             CancellationToken cancellationToken)
         {
-            return await employeeRepository.GetEmployees();
+            return (await employeeRepository.GetEmployees(cancellationToken)).Select(entity => entity.ToDto());
         }
     }
 }

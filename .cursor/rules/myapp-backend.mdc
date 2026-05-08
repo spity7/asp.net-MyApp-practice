@@ -1,0 +1,25 @@
+---
+description: Backend conventions for MyApp.Api (layering, validation, errors, configuration)
+globs: "**/*.cs"
+---
+
+# MyApp.Api backend rules
+
+## Structure
+
+- **Controllers** dispatch MediatR requests only; avoid business logic and direct DbContext/`HttpClient` use.
+- **Application** owns DTOs (`MyApp.Application.Dtos`), validators, and mapping from entities to DTOs.
+- **Core** defines repository interfaces and options section names; keep it free of ASP.NET types.
+- **Infrastructure** implements persistence and outbound HTTP; base URLs live in configuration (`ExternalApis`).
+
+## HTTP
+
+- Prefer **correct status codes**: 201 + `CreatedAtAction` for create, **404** when a resource is missing, **204** for successful delete without body, **502** only for upstream integration failures surfaced as `ExternalServiceException`.
+
+## Async
+
+- Forward **`CancellationToken`** from handlers into EF and HTTP calls.
+
+## Validation
+
+- Add FluentValidation for MediatR requests that carry user input; failures throw `ApplicationValidationException` consumed by global exception middleware.

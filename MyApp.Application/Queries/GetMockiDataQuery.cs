@@ -6,11 +6,12 @@ namespace MyApp.Application.Queries
 {
     public record GetMockiDataQuery() : IRequest<MockiData>;
 
-    public class GetMockiDataQueryHandler(IExternalVendorRepository externalVendorRepository) : IRequestHandler<GetMockiDataQuery, MockiData>
+    public class GetMockiDataQueryHandler(IExternalVendorGateway externalVendorGateway)
+        : IRequestHandler<GetMockiDataQuery, MockiData>
     {
-        public async Task<MockiData> Handle(GetMockiDataQuery request, CancellationToken cancellationToken)
+        public Task<MockiData> Handle(GetMockiDataQuery request, CancellationToken cancellationToken)
         {
-            return await externalVendorRepository.GetMockiDataAsync(cancellationToken);
+            return externalVendorGateway.GetMockiDataAsync(cancellationToken);
         }
     }
 }

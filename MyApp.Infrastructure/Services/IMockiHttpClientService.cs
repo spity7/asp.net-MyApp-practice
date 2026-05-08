@@ -4,6 +4,6 @@ namespace MyApp.Infrastructure.Services
 {
     public interface IMockiHttpClientService
     {
-        Task<MockiData> GetData();
+        Task<MockiData> GetDataAsync(CancellationToken cancellationToken = default);
     }
 }

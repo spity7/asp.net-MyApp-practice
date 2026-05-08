@@ -9,6 +9,8 @@ namespace MyApp.Core
         public static IServiceCollection AddCoreDI(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<ConnectionStringOptions>(configuration.GetSection(ConnectionStringOptions.SectionName));
+            services.Configure<MockiApiOptions>(configuration.GetSection(MockiApiOptions.SectionName));
+            services.Configure<JokeApiOptions>(configuration.GetSection(JokeApiOptions.SectionName));
 
             return services;
         }

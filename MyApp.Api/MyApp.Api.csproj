@@ -12,12 +12,26 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MyApp.Application\MyApp.Application.csproj" />
     <ProjectReference Include="..\MyApp.Infrastructure\MyApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <!-- Linked solution-root files so they appear in Visual Studio Solution Explorer -->
+  <ItemGroup>
+    <None Include="..\docs\**\*">
+      <Link>docs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+    <None Include="..\scripts\**\*">
+      <Link>scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
+    </None>
+    <None Include="..\README.md">
+      <Link>README.md</Link>
+    </None>
   </ItemGroup>
 
 </Project>

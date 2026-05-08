@@ -1,8 +1,11 @@
-﻿using MyApp.Core.Models;
+using MyApp.Core.Models;
 
 namespace MyApp.Core.Interfaces
 {
-    public interface IExternalVendorRepository
+    /// <summary>
+    /// Retrieves data from external HTTP APIs (not a persistence repository).
+    /// </summary>
+    public interface IExternalVendorGateway
     {
         Task<MockiData> GetMockiDataAsync(CancellationToken cancellationToken = default);
 

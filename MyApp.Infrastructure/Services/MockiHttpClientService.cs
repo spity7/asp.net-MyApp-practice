@@ -1,13 +1,27 @@
-﻿using MyApp.Core.Models;
+﻿using Microsoft.Extensions.Options;
+using MyApp.Core.Exceptions;
+using MyApp.Core.Models;
+using MyApp.Core.Options;
 using System.Net.Http.Json;
 
 namespace MyApp.Infrastructure.Services
 {
-    public class MockiHttpClientService(HttpClient httpClient) : IMockiHttpClientService
+    public class MockiHttpClientService(HttpClient httpClient, IOptionsMonitor<MockiApiOptions> optionsMonitor)
+        : IMockiHttpClientService
     {
-        public async Task<MockiData> GetData()
+        public async Task<MockiData> GetDataAsync(CancellationToken cancellationToken = default)
         {
-            return await httpClient.GetFromJsonAsync<MockiData>("79a883ff-00ec-43cd-a9d6-efe5dcb13487");
+            MockiApiOptions opts = optionsMonitor.CurrentValue;
+
+            MockiData? result =
+                await httpClient.GetFromJsonAsync<MockiData>(opts.DataPath.TrimStart('/'), cancellationToken);
+
+            if (result is null)
+            {
+                throw new ExternalServiceException("Mocki API returned no data.");
+            }
+
+            return result;
         }
     }
 }
